@@ -26,6 +26,15 @@ class GraphicViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let viewLayer = view.layer
+        viewLayer.cornerRadius = 8
+        
+        viewLayer.shadowColor = UIColor.black.cgColor
+        viewLayer.shadowOpacity = 0.05
+        viewLayer.shadowOffset = CGSize(width: 0, height: 0)
+        viewLayer.shadowRadius = 9.0
+        view.clipsToBounds = false
+        
         lineChartView = LineChartView()
         
         mainView.addSubview(lineChartView)

@@ -30,22 +30,23 @@ class StatisticsOutgoingPanelViewController: UIViewController, UITableViewDelega
         viewLayer.shadowOffset = CGSize(width: 0, height: 0)
         viewLayer.shadowRadius = 9.0
         view.clipsToBounds = false
-        
+        /*
         let topShadow = EdgeShadowLayer(forView: statisticsView, edge: .Top)
         let bottomShadow = EdgeShadowLayer(forView: statisticsView, edge: .Bottom)
         statisticsView.layer.addSublayer(topShadow)
         statisticsView.layer.addSublayer(bottomShadow)
-        
+        */
         tableView.tableFooterView = UIView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        userValueLabel.text = DataSource.consumption == nil ? "-" : String(format: "%.1f", DataSource.consumption!)
-        
         carNameLabel.text = DataSource.userCar.getName()
         carDetailsLabel.text = DataSource.userCar.descr
+        
+        /*
+        userValueLabel.text = DataSource.consumption == nil ? "-" : String(format: "%.1f", DataSource.consumption!)
         
         let f = {
             if (DataSource.userCar.index != nil) {
@@ -55,15 +56,21 @@ class StatisticsOutgoingPanelViewController: UIViewController, UITableViewDelega
         
         f()
         DataSource.loadCarIndex(completion: f)
-        
+        */
         tableView.reloadData()
     }
+    
+    @IBAction func analyticsTapped(_ sender: Any) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "analytics")
+        self.present(vc!, animated: true, completion: nil)
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return DataSource.userCar.measurements.count
+        return DataSource.userCar.measurements.count + 1
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -75,6 +82,13 @@ class StatisticsOutgoingPanelViewController: UIViewController, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if (indexPath.row == 0) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "totalCell") as! TotalCell
+            cell.setCell(array: DataSource.userCar.measurements)
+            return cell
+        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "consumptionCell") as! ConsumptionCell
         cell.setCell(m: DataSource.userCar.measurements[tableView.numberOfRows(inSection: indexPath.section) - indexPath.row - 1])
         return cell

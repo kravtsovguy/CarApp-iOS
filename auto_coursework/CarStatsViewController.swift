@@ -29,7 +29,7 @@ class CarStatsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        heightConstraint.constant = CGFloat(700 + 60 * DataSource.userCar.measurements.count)
+        heightConstraint.constant = CGFloat(500 + 60 * DataSource.userCar.measurements.count)
     }
     
 }
